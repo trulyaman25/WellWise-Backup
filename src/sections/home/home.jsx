@@ -131,7 +131,7 @@ function Home() {
                     </motion.div>
                 </div>
 
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="w-full max-w-7xl bg-white rounded-3xl p-16 text-white">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="w-full max-w-7xl bg-white rounded-3xl p-4 text-white">
                     <div className="flex flex-col text-gray-900 lg:flex-row gap-16 items-center">
                         <div className="lg:w-1/2">
                             <h2 className="font-googleSansMedium text-4xl mb-6">Why Choose Well Wise?</h2>
