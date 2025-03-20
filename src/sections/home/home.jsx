@@ -47,32 +47,54 @@ function Home() {
 
     return (
         <>
-            <div className="w-full h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-32 lg:py-64">
-                <motion.div id='home' initial={{ opacity: 0 }}animate={{ opacity: 1 }}transition={{ duration: 0.8 }}className="w-full h-screen flex flex-row justify-between items-center gap-10 pt-20" >
-                    <motion.div initial={{ x: -100, opacity: 0 }}animate={{ x: 0, opacity: 1 }}transition={{ duration: 0.8 }}className="flex flex-col justify-center items-start pl-20 gap-7" >
-                        <div className="h-fit font-googleSansBold">
-                            <motion.span initial={{ y: 20, opacity: 0 }}animate={{ y: 0, opacity: 1 }}transition={{ delay: 0.2 }}className="text-4xl text-[#227176]" >
+            <div className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-32 py-32">
+                <motion.div id='home' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
+                    className="w-full flex flex-col lg:flex-row justify-between items-center gap-10" >
+                    <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}
+                        className="flex flex-col justify-center items-center lg:items-start px-4 lg:pl-20 gap-7 order-2 lg:order-1" >
+                        <div className="h-fit font-googleSansBold text-center lg:text-left">
+                            <motion.span initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
+                                className="text-2xl md:text-3xl lg:text-4xl text-[#227176]" >
                                 AI Driven
                             </motion.span>
-                            <span className="text-4xl"> Mental Health <br /> Detection & Support</span>
-                            <div className="text-xl mt-4 text-gray-500 font-googleSansMedium w-[600px]">Streamlining Mental Health Care with AI-Driven Solutions.</div>
-                            <div className="text-xl text-gray-500 font-googleSansMedium w-[600px]">Early Detection, Prevention & Personalized Support</div>
+                            <span className="text-2xl md:text-3xl lg:text-4xl"> Mental Health <br /> Detection & Support</span>
+                            <div className="text-base md:text-lg lg:text-xl mt-4 text-gray-500 font-googleSansMedium w-full lg:w-[600px]">
+                                Streamlining Mental Health Care with AI-Driven Solutions.
+                            </div>
+                            <div className="text-base md:text-lg lg:text-xl text-gray-500 font-googleSansMedium w-full lg:w-[600px]">
+                                Early Detection, Prevention & Personalized Support
+                            </div>
                         </div>
                         
-                        <motion.button onClick={handleLoginClick}whileTap={{ scale: 0.95 }}className="w-[100px] h-[50px] font-googleSansMedium text-lg bg-gray-900 text-white rounded-xl shadow-md hover:shadow-2xl transition-all ease-in-out cursor-pointer">
+                        <motion.button onClick={handleLoginClick} whileTap={{ scale: 0.95 }}
+                            className="w-[120px] h-[50px] font-googleSansMedium text-lg bg-gray-900 text-white rounded-xl shadow-md hover:shadow-2xl transition-all ease-in-out cursor-pointer">
                             Log In
                         </motion.button>
                     </motion.div>
 
-                    <motion.img initial={{ x: 100, opacity: 0 }}animate={{ x: position.x, y: position.y, opacity: 1 }}transition={{ duration: 1, ease: "easeInOut" }}src={LandingImage} alt="Landing Image" className="h-full" />
+                    <motion.div className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center items-center">
+                        <motion.img 
+                            initial={{ x: 100, opacity: 0 }}
+                            animate={{ x: position.x, y: position.y, opacity: 1 }}
+                            transition={{ duration: 1, ease: "easeInOut" }}
+                            src={LandingImage}
+                            alt="Landing Image"
+                            className="w-[80%] md:w-[70%] lg:w-full h-auto object-contain"
+                        />
+                    </motion.div>
                 </motion.div>
             </div>
 
-            <section id="about" className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-24 py-32">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center max-w-4xl mb-24">
-                    <span className="text-[#227176] font-albulaHeavy text-4xl mb-10 inline-block">ABOUT US</span>
-                    <h1 className="font-albulaHeavy text-6xl text-gray-800 mb-8">Revolutionizing Mental Healthcare</h1>
-                    <p className="text-xl text-gray-600 font-googleSansMedium leading-relaxed">
+            <section id="about" className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-24 py-16 lg:py-32">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
+                    className="text-center max-w-4xl mb-16 lg:mb-24 px-4">
+                    <span className="text-[#227176] font-albulaHeavy text-2xl md:text-3xl lg:text-4xl mb-6 lg:mb-10 inline-block">
+                        ABOUT US
+                    </span>
+                    <h1 className="font-albulaHeavy text-3xl md:text-5xl lg:text-6xl text-gray-800 mb-6 lg:mb-8">
+                        Revolutionizing Mental Healthcare
+                    </h1>
+                    <p className="text-lg md:text-xl text-gray-600 font-googleSansMedium leading-relaxed px-4">
                         Your comprehensive mental health companion, designed to streamline the journey towards better mental wellness through intelligent tracking and personalized care.
                     </p>
                 </motion.div>
@@ -127,7 +149,7 @@ function Home() {
                 </motion.div>
             </section>
 
-            <section id="team" className="w-full h-auto flex flex-col justify-center items-center px-4 md:px-8 lg:px-24 lg:py-64">
+            <section id="team" className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-24 py-16 lg:py-64">
                 <h1 className="font-albulaLight tracking-widest uppercase text-gray-500 text-sm text-center">
                     Website Developed by <span className="text-[#227176] font-albulaBold hover:cursor-pointer">Team Binary Bots</span> for Hack-O-Harbour (Technovate 6.0), IIIT - Naya Raipur, Crafted with Love ❤️
                 </h1>
