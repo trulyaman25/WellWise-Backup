@@ -66,7 +66,7 @@ function Header() {
 					<span className={`flex flex-row justify-center items-center font-googleSansBlack text-2xl md:${logoText} text-[#227176]`}>Well Wise</span>
 				</div>
 
-				<button onClick={toggleMenu} className="lg:hidden bg-gray-900 p-2 rounded-full text-white">
+				<button onClick={toggleMenu} className="xl:hidden bg-gray-900 p-2 rounded-full text-white">
 					{isMenuOpen ? <X size={24} /> : <Menu size={24} />}
 				</button>
 
@@ -84,7 +84,8 @@ function Header() {
 						Contact Us
 					</Link>
 				</div>
-				<div className="hidden lg:flex w-fit h-fit bg-gray-900 rounded-full p-3 flex-row justify-between gap-10 items-center transition-all ease">
+
+				<div className="hidden xl:flex w-fit h-fit bg-gray-900 rounded-full p-3 flex-row justify-between gap-10 items-center transition-all ease">
 					<Link to="#home" className="px-10 py-2 transition-all bg-gray-800 duration-300 flex flex-row justify-center items-center font-googleSansLight rounded-full text-white border-2 border-[#6536ff] border-transparent hover:border-[#c3e5e0]" onClick={() => scrollToSection('home')}>
 						Home
 					</Link>
