@@ -8,7 +8,7 @@ function PatientDashboardLayout() {
                 <DashboardNavbar />
             </div>
 
-            <div className="ml-[160px] w-full z-10">
+            <div className="ml-[350px] w-full z-10">
                 <Outlet />
             </div>
         </div>

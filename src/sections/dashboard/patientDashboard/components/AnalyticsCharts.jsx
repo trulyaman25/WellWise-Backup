@@ -11,33 +11,16 @@ export const ScoreDistributionChart = ({ scores }) => {
     ];
 
     return (
-        <div className="w-80 h-80">
+        <div className="w-32 h-32">
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                    <Pie
-                        data={data}
-                        innerRadius={70}
-                        outerRadius={100}
-                        paddingAngle={4}
-                        dataKey="value"
-                        stroke="none"
-                        cornerRadius={4}
-                    >
+                    <Pie data={data} innerRadius={40} outerRadius={55} paddingAngle={4} dataKey="value" stroke="none" cornerRadius={100} >
                         {data.map((entry, index) => (
-                            <Cell 
-                                key={`cell-${index}`} 
-                                fill={PASTEL_COLORS[index % PASTEL_COLORS.length]}
-                            />
+                            <Cell key={`cell-${index}`} fill={PASTEL_COLORS[index % PASTEL_COLORS.length]} />
                         ))}
                     </Pie>
-                    <Tooltip 
-                        contentStyle={{ 
-                            backgroundColor: 'white',
-                            borderRadius: '4px',
-                            padding: '8px',
-                            border: 'none'
-                        }} 
-                    />
+                    
+                    <Tooltip contentStyle={{ backgroundColor: 'white',borderRadius: '4px',padding: '8px',border: 'none' }} />
                 </PieChart>
             </ResponsiveContainer>
         </div>
@@ -53,13 +36,7 @@ export const EmotionTrendChart = ({ emotionData }) => {
                     <XAxis dataKey="timestamp" tick={{ fill: "#666666" }} />
                     <YAxis tick={{ fill: "#666666" }} />
                     <Tooltip contentStyle={{ border: 'none', borderRadius: '4px' }} />
-                    <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#666666" 
-                        strokeWidth={2} 
-                        dot={{ fill: '#666666', r: 3 }} 
-                    />
+                    <Line type="monotone" dataKey="value" stroke="#666666" strokeWidth={2} dot={{ fill: '#666666', r: 3 }} />
                 </LineChart>
             </ResponsiveContainer>
         </div>

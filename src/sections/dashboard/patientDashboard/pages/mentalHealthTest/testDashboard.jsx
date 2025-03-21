@@ -374,191 +374,209 @@ function TestDashboard() {
     const numericalVideoScore = parseFloat(scores.videoScore).toFixed(3);
 
     return (
-        <div className="min-h-screen w-full p-4">
-            <div className="fixed w-[calc(100%-200px)] border border-gray-200 p-10 flex flex-row justify-between items-start rounded-3xl backdrop-blur-lg z-10">
-                <h1 className="text-4xl font-googleSansBold text-gray-800">Mental Health Assessment</h1>
+        <>
+            <div className="min-h-screen max-w-[calc(100vw-350px)] p-4">
+                <div className="fixed w-[calc(100%-385px)] border border-gray-200 p-10 flex flex-row justify-between items-start rounded-3xl backdrop-blur-lg z-10">
+                    <h1 className="text-4xl font-googleSansBold text-gray-800">Mental Health Assessment</h1>
 
-                <div className="flex flex-row justify-center items-center">
-                    <p className="font-googleSansMedium">
-                        <span className="text-lg">Test ID: </span>
-                        <span className="text-lg text-gray-700">{testID}</span>
-                    </p>
+                    <div className="flex flex-row justify-center items-center">
+                        <p className="font-googleSansMedium">
+                            <span className="text-lg">Test ID: </span>
+                            <span className="text-lg text-gray-700">{testID}</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
+                
+                <div className="w-full px-5 mx-auto space-y-8 pt-32">
+                    {/* Patient Overview Section */}
+                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-googleSansBold text-gray-800">Patient Overview</h2>
+                        </div>
+                        <div className="grid grid-cols-2 gap-6">
+                            {/* Personal Details */}
+                            <div className="bg-slate-100 p-6 rounded-3xl space-y-4">
+                                <h3 className="font-googleSansMedium text-gray-700">Personal Information</h3>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <InfoItem label="Name" value={patientCredentials.name} className="font-googleSansMedium"/>
+                                    <InfoItem label="Health ID" value={patientCredentials.healthID} className="font-googleSansMedium"/>
+                                    <InfoItem label="Email" value={patientCredentials.email} className="font-googleSansMedium"/>
+                                    <InfoItem label="Wallet Address" value={patientCredentials.cryptoWalletAddress} className="col-span-2 font-googleSansMedium" />
+                                </div>
+                            </div>
 
-            <div className="w-full mx-auto pt-32 px-10 space-y-6">
-                <div className="p-4">
-                    <div className="flex justify-between items-start gap-4">
-                        <div className="space-y-4">
-                            <div className="w-[800px]">
-                                <div className="pt-10 pb-10 pr-10 rounded-lg">
-                                    <h3 className="font-googleSansMedium text-2xl text-gray-700 mb-3">Personal Details</h3>
-                                    <div className="space-y-2 text-sm">
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-googleSansRegular text-lg text-gray-600">Name:</span>
-                                            <span className="font-googleSansRegular text-lg">{patientCredentials.name}</span>
+                            {/* Assessment Overview */}
+                            <div className="bg-slate-100 p-6 rounded-3xl">
+                                <div className="flex items-center justify-between">
+                                    <div className="w-full">
+                                        <h3 className="font-googleSansMedium text-gray-700 mb-4">Assessment Summary</h3>
+                                        <div className="flex items-center justify-evenly">
+                                            <div>
+
+                                            <CircularProgressbar value={depressionScore} text={`${depressionScore}%`} strokeWidth={12} styles={buildStyles({ pathColor: depressionStatus.color, textColor: depressionStatus.color, trailColor: '#F5F5F5'})} className="w-fit h-fit max-w-32 max-h-32 p-2" />
+                                            </div>
+                                            
+                                            <div className="w-28 h-28">
+                                                <ScoreDistributionChart scores={scores} />
+                                            </div>
                                         </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-googleSansRegular text-lg text-gray-600">Health ID:</span>
-                                            <span className="font-googleSansRegular text-lg">{patientCredentials.healthID}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-googleSansRegular text-lg text-gray-600">Email:</span>
-                                            <span className="font-googleSansRegular text-lg">{patientCredentials.email}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="font-googleSansRegular text-lg text-gray-600">Wallet:</span>
-                                            <span className="font-googleSansRegular text-lg">
-                                                {patientCredentials.cryptoWalletAddress}
-                                            </span>
+
+                                        <div className="mt-4 w-full flex flex-row justify-between items-center gap-2 pr-10 bg-white px-3 py-2 rounded-lg">
+                                            <div className="flex items-center gap-2">
+                                                <AlertTriangle size={16} className="text-gray-600" />
+                                                <span className="text-gray-700 font-googleSansBold" >Depression Level: </span>
+                                            </div>
+                                            <div className="text-gray-700 font-googleSansBold">
+                                                <span style={{ color: depressionStatus.color }} className="font-medium font-googleSansBold ml-1"> {depressionStatus.level} </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="flex items-center gap-8">
-                            <div className="w-80 h-80 ">
-                                <ScoreDistributionChart scores={scores} />
-                            </div>
-                            <div className="w-[200px] h-[200px]">
-                                <CircularProgressbar value={depressionScore} text={`${depressionScore}%`} strokeWidth={12} styles={buildStyles({ pathColor: depressionStatus.color, textColor: depressionStatus.color, trailColor: '#F5F5F5' })} />
-                            </div>
-                        </div>
                     </div>
 
-                    <div className="mt-4 inline-flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded">
-                        <AlertTriangle size={16} className="text-gray-600" />
-                        <span className="text-gray-700">Depression Level: 
-                            <span style={{ color: depressionStatus.color }} className="font-medium ml-1">
-                                {depressionStatus.level}
-                            </span>
-                        </span>
+                    <hr className="border-gray-200" />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <ScoreCard title="History Score" score={numericalHistoryScore * 100} icon={<FileText className="w-5 h-5 text-emerald-600" />} detail="Background Assessment" />
+                        <ScoreCard title="PHQ-9 Score" score={numericalPHQ9Score * 100} icon={<Activity className="w-5 h-5 text-blue-600" />} detail="Depression Screening" />
+                        <ScoreCard title="Sentiment Score" score={numericalSentimentalScore * 100} icon={<Brain className="w-5 h-5 text-purple-600" />} detail="Emotional Analysis" />
+                        <ScoreCard title="Video Analysis" score={numericalVideoScore * 100} icon={<Video className="w-5 h-5 text-red-600" />} detail="Facial Expression" />
                     </div>
-                </div>
 
-                {/* Score Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <ScoreCard
-                        title="History Score"
-                        score={numericalHistoryScore * 100}
-                        icon={<FileText className="w-6 h-6 text-emerald-600" />} // Increased icon size
-                        detail="Background Assessment"
-                    />
-                    <ScoreCard
-                        title="PHQ-9 Score"
-                        score={numericalPHQ9Score * 100}
-                        icon={<Activity className="w-6 h-6 text-blue-600" />} // Increased icon size
-                        detail="Depression Screening"
-                    />
-                    <ScoreCard
-                        title="Sentiment Score"
-                        score={numericalSentimentalScore * 100}
-                        icon={<Brain className="w-6 h-6 text-purple-600" />} // Increased icon size
-                        detail="Emotional Analysis"
-                    />
-                    <ScoreCard
-                        title="Video Analysis"
-                        score={numericalVideoScore * 100}
-                        icon={<Video className="w-6 h-6 text-red-600" />} // Increased icon size
-                        detail="Facial Expression"
-                    />
-                </div>
+                    <hr className="border-gray-200" />
 
-
-                {/* Emotion Graph Card */}
-                <div className="bg-white p-4">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-googleSansBold text-gray-800">Emotional Expression Analysis</h2>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                            <div className="flex items-center justify-between">
-                                <span className="font-googleSansMedium text-lg text-gray-600">Total Blink Count</span>
-                                <span className="text-xl font-googleSansRegular text-gray-800">{emotionDetails.blinkCount}</span>
-                            </div>
-                        </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                            <div className="flex items-center justify-between">
-                                <span className="font-googleSansMedium text-lg text-gray-600">Blinks per Minute</span>
-                                <span className="text-xl font-googleSansRegular text-gray-800">{emotionDetails.blinkPerMin}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Analysis Sections */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {/* PHQ-9 Card with Severity Indicators */}
+                    {/* Emotion Graph Card */}
                     <div className="bg-white p-4">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-2xl font-googleSansBold text-gray-800">PHQ-9 Analysis</h2>
+                            <h2 className="text-xl font-googleSansBold text-gray-800">Emotional Expression Analysis</h2>
                         </div>
-                        <div className="space-y-4">
-                            {questionData.phq9.questions.map((question, index) => {
-                                const severity = getPHQ9SeverityColor(phq9Details[`${index}`], index);
-                                return (
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-600">Total Blink Count</span>
+                                    <span className="text-xl font-medium text-gray-800">{emotionDetails.blinkCount}</span>
+                                </div>
+                            </div>
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-600">Blinks per Minute</span>
+                                    <span className="text-xl font-medium text-gray-800">{emotionDetails.blinkPerMin}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr className="border-gray-200" />
+
+                    {/* Analysis Sections */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* PHQ-9 Card with Severity Indicators */}
+                        <div className="bg-white p-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-googleSansBold text-gray-800">PHQ-9 Analysis</h2>
+                            </div>
+                            <div className="space-y-4">
+                                {questionData.phq9.questions.map((question, index) => {
+                                    const severity = getPHQ9SeverityColor(phq9Details[`${index}`], index);
+                                    return (
+                                        <div key={index} className="space-y-2">
+                                            <p className="text-gray-600 text-sm">{question.text}</p>
+                                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                                                <span className="text-gray-800">Response:</span>
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-2 h-2 rounded-full ${severity.bg}`} />
+                                                    <span className={`font-medium ${severity.text}`}>
+                                                        {question.options[phq9Details[`${index}`]] || 'No response'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Overall PHQ-9 Score:</span>
+                                        <span className={`font-medium ${
+                                            parseFloat(phq9Details.score) > 0.7 ? 'text-red-600' :
+                                            parseFloat(phq9Details.score) > 0.5 ? 'text-orange-600' :
+                                            parseFloat(phq9Details.score) > 0.3 ? 'text-yellow-600' :
+                                            'text-green-600'
+                                        }`}>
+                                            {numericalPHQ9Score * 100} %
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Sentiment Analysis with Trend */}
+                        <div className="bg-white p-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-googleSansBold text-gray-800">Sentiment Analysis</h2>
+                            </div>
+                            <div className="mt-20">
+                                <h3 className="text-lg font-googleSansMedium text-gray-800 mb-4">Sentiment Trend</h3>
+                                <EmotionTrendChart emotionData={[
+                                    { timestamp: 'Start', value: 0.5 },
+                                    { timestamp: 'Middle', value: parseFloat(sentimentalDetails.score) },
+                                    { timestamp: 'End', value: parseFloat(scores.sentimentalScore) }
+                                ]} />
+                            </div>
+                            <div className="space-y-4 mt-20">
+                                {questionData.sentiment.questions.map((question, index) => (
                                     <div key={index} className="space-y-2">
-                                        <p className="text-gray-600 font-googleSansMedium text-base">Q{index + 1}. {question.text}</p>
-                                        <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                                            <span className="text-gray-700 font-albulaRegular">Response:</span>
-                                            <div className="flex items-center gap-2">
-                                                <div className={`w-2 h-2 rounded-full ${severity.bg}`} />
-                                                <span className={`font-googleSansMedium ${severity.text}`}>
-                                                    {question.options[phq9Details[`${index}`]] || 'No response'}
+                                        <p className="text-gray-600 text-sm">{question.text}</p>
+                                        <div className="bg-gray-50 p-3 rounded-lg">
+                                            <p className="text-gray-800 whitespace-pre-wrap">
+                                                <span className="text-gray-600 font-medium">User's Response: </span>
+                                                {index === 0 ? sentimentalDetails.test1 : sentimentalDetails.test2}
+                                            </p>
+                                            <div className="mt-2 flex justify-between items-center text-sm">
+                                                <span className="text-gray-600">ML Analysis:</span>
+                                                <span className={`font-medium ${getSentimentColor(
+                                                    index === 0 ? sentimentalDetails.analysisText1 : sentimentalDetails.analysisText2
+                                                )}`}>
+                                                    {index === 0 ? sentimentalDetails.analysisText1 : sentimentalDetails.analysisText2}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                );
-                            })}
-                            
-                            <div className=" p-3 bg-gray-50 rounded-lg">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 font-googleSansMedium text-xl">Overall PHQ-9 Score:</span>
-                                    <span className={`font-googleSansBold text-xl ${
-                                        parseFloat(phq9Details.score) > 0.7 ? 'text-red-600' :
-                                        parseFloat(phq9Details.score) > 0.5 ? 'text-orange-600' :
-                                        parseFloat(phq9Details.score) > 0.3 ? 'text-yellow-600' :
-                                        'text-green-600'
-                                    }`}>
-                                        {numericalPHQ9Score * 100} %
-                                    </span>
+                                ))}
+                                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-gray-600">Overall Sentiment Score:</span>
+                                        <span className="font-medium text-[#266666]">
+                                            {sentimentalDetails.score ? `${(parseFloat(sentimentalDetails.score) * 100).toFixed(1)}%` : 'N/A'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Sentiment Analysis with Trend */}
+                    <hr className="border-gray-200" />
+
+                    {/* Childhood Assessment Card */}
                     <div className="bg-white p-4">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-2xl font-googleSansBold text-gray-800">Sentiment Analysis</h2>
+                            <h2 className="text-xl font-googleSansBold text-gray-800">Childhood Assessment</h2>
                         </div>
-
-                        <div className="mt-20 w-full flex flex-col justify-center items-center">
-                            <EmotionTrendChart emotionData={[
-                                { timestamp: 'Start', value: 0.5 },
-                                { timestamp: 'Middle', value: parseFloat(sentimentalDetails.score) },
-                                { timestamp: 'End', value: parseFloat(scores.sentimentalScore) }
-                            ]} />
-                            <h3 className="text-lg font-googleSansMedium text-gray-800 mt-6">Sentiment Trend</h3>
-                        </div>
-
-                        <div className="space-y-4 mt-20">
-                            {questionData.sentiment.questions.map((question, index) => (
+                        <div className="space-y-4">
+                            {questionData.childhood.questions.map((question, index) => (
                                 <div key={index} className="space-y-2">
-                                    <p className="text-gray-600 font-googleSansMedium text-base">Q{index + 1}. {question.text}</p>
-                                    <div className="bg-gray-50 p-3 rounded-lg">
-                                        <p className="text-gray-800 whitespace-pre-wrap font-googleSansMedium">
-                                            <span className="text-gray-700 font-googleSansRegular">User's Response: </span>
-                                            {index === 0 ? sentimentalDetails.test1 : sentimentalDetails.test2}
-                                        </p>
-                                        <div className="mt-2 flex justify-between items-center text-sm">
-                                            <span className="text-gray-600">ML Analysis:</span>
-                                            <span className={`font-googleSansMedium ${getSentimentColor(
-                                                index === 0 ? sentimentalDetails.analysisText1 : sentimentalDetails.analysisText2
-                                            )}`}>
-                                                {index === 0 ? sentimentalDetails.analysisText1 : sentimentalDetails.analysisText2}
+                                    <p className="text-gray-600 text-sm">{question.text}</p>
+                                    <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                                        <span className="text-gray-800">Selected:</span>
+                                        <div className="flex items-center gap-2">
+                                            <div className={`w-2 h-2 rounded-full ${getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`])}`} />
+                                            <span className={`font-medium ${
+                                                getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`]) === 'bg-red-500' ? 'text-red-600' :
+                                                getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`]) === 'bg-yellow-500' ? 'text-yellow-600' :
+                                                'text-green-600'
+                                            }`}>
+                                                {childHoodDetails[`question${index + 1}`] || 'No response'}
                                             </span>
                                         </div>
                                     </div>
@@ -566,68 +584,42 @@ function TestDashboard() {
                             ))}
                             <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 text-xl font-googleSansMedium">Overall Sentiment Score:</span>
-                                    <span className="text-[#266666] font-googleSansBold text-xl">
-                                        {sentimentalDetails.score ? `${(parseFloat(sentimentalDetails.score) * 100).toFixed(1)}%` : 'N/A'}
+                                    <span className="text-gray-600">Overall Childhood Assessment Score:</span>
+                                    <span className="font-medium text-[#266666]">
+                                        {childHoodDetails.score ? `${(parseFloat(childHoodDetails.score) * 100).toFixed(1)}%` : 'N/A'}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Childhood Assessment Card */}
-                <div className="bg-white p-4">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-googleSansBold text-gray-800">Childhood Assessment</h2>
-                    </div>
-                    <div className="space-y-4">
-                        {questionData.childhood.questions.map((question, index) => (
-                            <div key={index} className="space-y-2">
-                                <p className="text-gray-600 font-googleSansMedium text-base">Q{index + 1}. {question.text}</p>
-                                <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                                    <span className="text-gray-700 font-albulaRegular">Response:</span>
-                                    <div className="flex items-center gap-2">
-                                        <div className={`w-2 h-2 rounded-full ${getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`])}`} />
-                                        <span className={`font-googleSansMedium ${
-                                            getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`]) === 'bg-red-500' ? 'text-red-600' :
-                                            getChildhoodSeverityColor(childHoodDetails[`question${index + 1}`]) === 'bg-yellow-500' ? 'text-yellow-600' :
-                                            'text-green-600'
-                                        }`}>
-                                            {childHoodDetails[`question${index + 1}`] || 'No response'}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                            <div className="flex justify-between items-center">
-                                <span className="text-gray-600 text-xl font-googleSansMedium">Overall Childhood Assessment Score:</span>
-                                <span className="text-[#266666] font-googleSansBold text-xl">
-                                    {childHoodDetails.score ? `${(parseFloat(childHoodDetails.score) * 100).toFixed(1)}%` : 'N/A'}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <hr className="border-gray-200" />
 
-                <img src={deepFaceGraph} alt="Emotion Analysis" className="w-full rounded-xl" />
+                    <img src={deepFaceGraph} alt="Emotion Analysis" className="w-full rounded-xl" />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
+const InfoItem = ({ label, value, className = "" }) => (
+    <div className={`space-y-1 ${className}`}>
+        <span className="text-gray-500 text-sm">{label}</span>
+        <p className="font-medium text-gray-800 truncate">{value}</p>
+    </div>
+);
+
 const ScoreCard = ({ title, score, icon, detail }) => {
     return (
-        <div className="bg-white border-2 border-gray-100 rounded-xl p-4 py-7 cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all ease-in-out">
+        <div className="bg-white p-4">
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                     {icon}
-                    <h3 className="text-gray-800 font-googleSansBold text-2xl">{title}</h3>
+                    <h3 className="text-gray-800 font-medium">{title}</h3>
                 </div>
-                <div className="text-2xl font-googleSansBold text-gray-800">{score.toFixed(1)}%</div>
+                <div className="text-xl font-medium text-gray-800">{score.toFixed(1)}%</div>
             </div>
-            <p className="font-albulaRegular text-gray-500 text-base">{detail}</p>
+            <p className="text-gray-500 text-sm">{detail}</p>
         </div>
     );
 };
