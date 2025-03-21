@@ -200,6 +200,22 @@ contract MentalHealth {
         );
     }
 
+    function getFinalScore(string memory _testID) public view returns (string memory) {
+        return testIDToPatientTest[_testID].finalScore;
+    }
+
+    function getmhtcdscore(string memory _testID) public view returns (string memory) {
+        return testIDToPatientTest[_testID].mhtcd.score;
+    }
+
+    function getmhtphqscore(string memory _testID) public view returns (string memory) {
+        return testIDToPatientTest[_testID].mhtphqDetails.score;
+    }
+
+    function getSentimentScore(string memory _testID) public view returns (string memory) {
+        return testIDToPatientTest[_testID].sentimentDetails.score;
+    }
+
     function getCompleteTestDetails(string memory _testID)  public view  returns (address _cryptoWalletAddress,string memory _healthID,string memory _childhoodScore,string memory _phq9Score,string memory _sentimentalScore )  {
         PatientMHTest memory testDetails = testIDToPatientTest[_testID];
         return (
