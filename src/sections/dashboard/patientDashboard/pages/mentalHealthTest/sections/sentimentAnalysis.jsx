@@ -3,6 +3,7 @@ import Web3 from "web3";
 import axios from "axios";
 import MentalHealth from "../../../../../../build/contracts/MentalHealth.json";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import questionData from '../../../data/questionData.json';
 
 function SentimentAnalysis({ step, patientDetails, tID }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -11,18 +12,8 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
     const navigate = useNavigate();
     const {healthID} = useParams();
 
-    const questions = [
-        {
-            id: 1,
-            text: "Can you describe how you've been feeling emotionally over the past week?",
-            type: "text",
-        },
-        {
-            id: 2,
-            text: "What has been on your mind lately? Please type your response.",
-            type: "text",
-        },
-    ];
+    const questions = questionData.sentiment.questions;
+    const title = questionData.sentiment.title;
 
     const handleTextChange = (e) => {
         const { value } = e.target;
@@ -115,7 +106,7 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
                 <div>
                     <div className="p-6">
                         <h2 className="text-2xl font-albulaHeavy text-gray-800 mb-6">
-                            Sentiment Analysis
+                            {title}
                         </h2>
 
                         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">

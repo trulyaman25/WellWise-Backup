@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3';
 import MentalHealth from '../../../../../../build/contracts/MentalHealth.json';
+import questionData from '../../../data/questionData.json';
 
 function ChildhoodSection({ step, patientDetails, tID }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -9,43 +10,8 @@ function ChildhoodSection({ step, patientDetails, tID }) {
     const [selectedAnswer, setSelectedAnswer] = useState('');
     const [totalScore, setTotalScore] = useState(0);
 
-    const questions = [
-        {
-            text: "Do you have a family history of depression or other mental health disorders? If yes, please specify.",
-            options: ["No", "Yes, a distant relative", "Yes, an immediate family member"],
-            image: "/public/illustration/Screenshot_2025-01-11_at_8.07.47_PM-removebg-preview.png"
-        },
-        {
-            text: "Have you experienced any significant life changes or stressful events recently, such as job loss, family issues, or relationship problems?",
-            options: ["No, nothing significant", "Yes, a minor event", "Yes, a major event"],
-            image: "/public/illustration/relationshipProblems.jpg"
-        },
-        {
-            text: "How have your sleep patterns been over the past few weeks? (e.g., difficulty falling asleep, staying asleep, or oversleeping)",
-            options: ["I sleep well and feel rested", "I have trouble falling asleep or staying asleep", "I sleep very little or excessively"],
-            image: "/public/animations/sleep.gif"
-        },
-        {
-            text: "Have you noticed any significant changes in your appetite or eating habits recently?",
-            options: ["No, my appetite is normal", "I eat more or less than usual", "I have lost or gained significant weight recently"],
-            image: "/public/illustration/food.jpg",
-        },
-        {
-            text: "Did you experience bullying or social isolation during your school years? If so, how did it affect you emotionally or socially?",
-            options: ["No, I was well-liked", "A little, but it didn’t affect me much", "Yes, it had a lasting emotional impact"],
-            image: "/public/illustration/bully.png"
-        },
-        {
-            text: "Do you have a reliable support system of family or friends to talk to when feeling down or stressed?",
-            options: ["Yes, I have a strong support system", "I have some support, but it’s limited", "I feel isolated and have no one to talk to"],
-            image: "/public/illustration/family.png"
-        },
-        {
-            text: "Do you use substances such as alcohol, recreational drugs, or certain medications to cope with stress or emotions? If yes, how frequently?",
-            options: ["No, I don’t use substances", "Occasionally, but not regularly", "Yes, heavily"],
-            image: "/public/animations/Alcohol.gif"
-        }
-    ];
+    const questions = questionData.childhood.questions;
+    const title = questionData.childhood.title;
 
     const handleAnswerChange = (value, score) => {
         const questionKey = `question${currentQuestion + 1}`;
@@ -128,7 +94,7 @@ function ChildhoodSection({ step, patientDetails, tID }) {
                 <div>
                     <div className="p-6">
                         <h2 className="text-3xl font-albulaHeavy text-gray-800 mb-6">
-                            Childhood and Past Experience
+                            {title}
                         </h2>
                         <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
                             <div

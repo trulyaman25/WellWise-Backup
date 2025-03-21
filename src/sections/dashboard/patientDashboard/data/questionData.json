@@ -1,0 +1,114 @@
+{
+  "phq9": {
+    "title": "PHQ-9 Assessment",
+    "questions": [
+      {
+        "id": 1,
+        "text": "Have you lost interest in things you usually enjoy doing?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 2,
+        "text": "Have you been feeling down, sad, or hopeless lately?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 3,
+        "text": "Are you having trouble sleeping, or are you sleeping more than usual?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 4,
+        "text": "Do you often feel tired or low on energy?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 5,
+        "text": "Has your appetite changed, like eating too little or too much?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 6,
+        "text": "Do you feel bad about yourself, like you've let yourself or others down?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 7,
+        "text": "Is it hard to focus on tasks like reading, watching TV, or working?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 8,
+        "text": "Have you felt unusually restless or very sluggish lately, in a way others might notice?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      },
+      {
+        "id": 9,
+        "text": "Have you had thoughts about not wanting to be here or about hurting yourself?",
+        "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+      }
+    ]
+  },
+  "childhood": {
+    "title": "Childhood and Past Experience",
+    "questions": [
+      {
+        "id": 1,
+        "text": "Do you have a family history of depression or other mental health disorders? If yes, please specify.",
+        "options": ["No", "Yes, a distant relative", "Yes, an immediate family member"],
+        "image": "/public/illustration/Screenshot_2025-01-11_at_8.07.47_PM-removebg-preview.png"
+      },
+      {
+        "id": 2,
+        "text": "Have you experienced any significant life changes or stressful events recently?",
+        "options": ["No, nothing significant", "Yes, a minor event", "Yes, a major event"],
+        "image": "/public/illustration/relationshipProblems.jpg"
+      },
+      {
+        "id": 3,
+        "text": "How have your sleep patterns been over the past few weeks?",
+        "options": ["I sleep well and feel rested", "I have trouble falling asleep or staying asleep", "I sleep very little or excessively"],
+        "image": "/public/animations/sleep.gif"
+      },
+      {
+        "id": 4,
+        "text": "Have you noticed any significant changes in your appetite or eating habits recently?",
+        "options": ["No, my appetite is normal", "I eat more or less than usual", "I have lost or gained significant weight recently"],
+        "image": "/public/illustration/food.jpg"
+      },
+      {
+        "id": 5,
+        "text": "Did you experience bullying or social isolation during your school years?",
+        "options": ["No, I was well-liked", "A little, but it didn't affect me much", "Yes, it had a lasting emotional impact"],
+        "image": "/public/illustration/bully.png"
+      },
+      {
+        "id": 6,
+        "text": "Do you have a reliable support system of family or friends to talk to when feeling down or stressed?",
+        "options": ["Yes, I have a strong support system", "I have some support, but it's limited", "I feel isolated and have no one to talk to"],
+        "image": "/public/illustration/family.png"
+      },
+      {
+        "id": 7,
+        "text": "Do you use substances such as alcohol, recreational drugs, or certain medications to cope with stress or emotions?",
+        "options": ["No, I don't use substances", "Occasionally, but not regularly", "Yes, heavily"],
+        "image": "/public/animations/Alcohol.gif"
+      }
+    ]
+  },
+  "sentiment": {
+    "title": "Sentiment Analysis",
+    "questions": [
+      {
+        "id": 1,
+        "text": "Can you describe how you've been feeling emotionally over the past week?",
+        "type": "text"
+      },
+      {
+        "id": 2,
+        "text": "What has been on your mind lately? Please type your response.",
+        "type": "text"
+      }
+    ]
+  }
+}

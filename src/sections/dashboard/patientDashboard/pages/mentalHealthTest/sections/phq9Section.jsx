@@ -54,6 +54,13 @@ function PHQ9Section({ step, patientDetails, tID }) {
         "Q9) Have you had thoughts about not wanting to be here or about hurting yourself?"
     ];    
 
+    const answerOptions = [
+        'Not at all',
+        'Several days',
+        'More than half the days',
+        'Nearly every day'
+    ];
+
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({});
     const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -65,10 +72,13 @@ function PHQ9Section({ step, patientDetails, tID }) {
                          answers[`question${currentQuestion + 1}`] === "1" ? 1 : 0;
         const newScore = value === "3" ? 3 : value === "2" ? 2 : value === "1" ? 1 : 0;
     
+        const answerText = answerOptions[parseInt(value)];
+        
         setSelectedAnswer(value);
         setAnswers((prevAnswers) => ({
             ...prevAnswers,
-            [`question${currentQuestion + 1}`]: value
+            [`question${currentQuestion + 1}`]: value,
+            [`question${currentQuestion + 1}Text`]: answerText
         }));
         setTotalScore((prevScore) => prevScore - oldScore + newScore);
     };
