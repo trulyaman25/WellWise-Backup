@@ -4,7 +4,7 @@ import PatientRegistration from '../../../../build/contracts/PatientRegistration
 import MentalHealth from '../../../../build/contracts/MentalHealth.json';
 import Web3 from 'web3';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area } from 'recharts';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BiTestTube } from 'react-icons/bi';
 import { MdTrendingUp } from 'react-icons/md';
 import { RiMentalHealthLine } from 'react-icons/ri';
@@ -13,17 +13,14 @@ import styled from '@emotion/styled';
 import { ChevronRight, User, Calendar, Phone, MapPin, Mail, FileText, X } from "lucide-react";
 
 import '../../../../globalStyles.css'
-import D_BRAIN from '/illustration/D_BRAIN.png';
 
 const ScrollableContainer = styled.div`
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
-
-// Remove the FixedHeader styled component
 
 const ScoreGraph = ({ data, dataKey, color, title, icon }) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -90,7 +87,6 @@ const ScoreGraph = ({ data, dataKey, color, title, icon }) => {
 
 const CustomTooltip = ({ active, payload, label, focusedLine }) => {
     if (active && payload && payload.length) {
-        // Filter to show only the focused line's data
         const relevantData = payload.filter(p => !focusedLine || p.dataKey === focusedLine);
         
         return (
@@ -242,8 +238,105 @@ const prepareUnifiedData = (details) => {
     }));
 };
 
+const AppointmentModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.5, opacity: 0 }}
+          transition={{ type: "spring", duration: 0.5 }}
+          className="bg-white rounded-xl p-6 w-[600px] shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-googleSansBold text-gray-800">Schedule Appointment</h3>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X size={20} className="text-gray-500" />
+            </button>
+          </div>
+          
+          <div className="bg-gray-50 rounded-lg p-4 mb-6">
+            <p className="text-gray-600 mb-4">You'll be redirected to Google Meet for scheduling your appointment.</p>
+            <p className="text-sm text-gray-500">Note: Please ensure you're logged into your Google account.</p>
+          </div>
+          
+          <div className="flex justify-end gap-4">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <a
+              href="https://meet.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-[#1a5252] text-white rounded-lg hover:bg-[#153f3f] transition-colors flex items-center gap-2"
+            >
+              <Calendar size={18} />
+              Continue to Google Meet
+            </a>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
+const IFrameModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.5, opacity: 0 }}
+          transition={{ type: "spring", duration: 0.5 }}
+          className="bg-white rounded-xl p-4 w-[90%] max-w-[800px] h-[80vh] shadow-2xl relative"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button 
+            onClick={onClose}
+            className="absolute top-2 right-2 p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+          </button>
+          
+          <iframe
+            src="https://cdn.botpress.cloud/webchat/v2.3/shareable.html?configUrl=https://files.bpcontent.cloud/2024/12/14/20/20241214203234-PDJ8GLY8.json"
+            className="w-full h-full rounded-lg"
+            title="Chat Interface"
+          />
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const SidePanel = ({ patientDetails, onExpandChange }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isIFrameOpen, setIsIFrameOpen] = useState(false);
 
     useEffect(() => {
         onExpandChange(isExpanded);
@@ -261,225 +354,235 @@ const SidePanel = ({ patientDetails, onExpandChange }) => {
     };
 
     return (
-        <motion.div 
-            className={`bg-white rounded-[40px] p-6 border-l border-gray-100 flex flex-col gap-6 transition-all duration-300 ${
-                isExpanded ? 'w-[800px] px-12' : 'w-[375px]'
-            }`}
-            layout
-        >
-            {/* Header with close button when expanded */}
-            <div className="flex justify-between items-center">
-                {isExpanded && (
-                    <button 
-                        onClick={() => setIsExpanded(false)}
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                        <X size={20} className="text-gray-500" />
-                    </button>
+        <>
+            <motion.div 
+                className={`bg-white rounded-[40px] p-6 border-l border-gray-100 flex flex-col gap-6 transition-all duration-300 ${
+                    isExpanded ? 'w-[800px] px-12' : 'w-[375px]'
+                }`}
+                layout
+            >
+                <div className="flex flex-col items-center" onClick={() => !isExpanded && setIsExpanded(true)}>
+                    <div onClick={() => setIsExpanded(false)} className="w-20 h-20 bg-[#d4eceb] rounded-full flex items-center cursor-pointer justify-center mb-3">
+                        <span className="text-[#1a5252] text-3xl font-semibold cursor-pointer">
+                            {patientDetails.credentials.name.charAt(0)}
+                        </span>
+                    </div>
+                    <h3 className="text-lg font-googleSansBold text-gray-800">
+                        {patientDetails.credentials.name}
+                    </h3>
+                    <p className="text-sm text-gray-500">Patient ID: {patientDetails.credentials.healthID}</p>
+                </div>
+
+                {!isExpanded ? (
+                    <>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                                <User size={18} className="text-[#1a5252]" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Age</p>
+                                    <p className="font-medium">{patientDetails.personalDetails.age} years</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Phone size={18} className="text-[#1a5252]" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Contact</p>
+                                    <p className="font-medium">{patientDetails.contactDetails.contactNumber}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Mail size={18} className="text-[#1a5252]" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Email</p>
+                                    <p className="font-medium">{patientDetails.credentials.email}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <MapPin size={18} className="text-[#1a5252]" />
+                                <div>
+                                    <p className="text-sm text-gray-500">Location</p>
+                                    <p className="font-medium">{patientDetails.contactDetails.city}, {patientDetails.contactDetails.state}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                            <div className="flex items-center justify-between mb-3">
+                                <h4 className="text-sm font-googleSansBold text-gray-700">Latest Test Results</h4>
+                                <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
+                                    Test #{patientDetails.mentalHealthDetails.testIDs.length}
+                                </span>
+                            </div>
+
+                            {patientDetails.mentalHealthDetails.testIDs.length > 0 && (
+                                <>
+                                    <div className="mb-3">
+                                        <span className="px-2 py-1 text-xs rounded-full" 
+                                            style={{ 
+                                                backgroundColor: getMentalHealthStatus(
+                                                    patientDetails.mentalHealthDetails.finalScores[
+                                                        patientDetails.mentalHealthDetails.finalScores.length - 1
+                                                    ]
+                                                ).color + '20',
+                                                color: getMentalHealthStatus(
+                                                    patientDetails.mentalHealthDetails.finalScores[
+                                                        patientDetails.mentalHealthDetails.finalScores.length - 1
+                                                    ]
+                                                ).color 
+                                            }}
+                                        >
+                                            {getMentalHealthStatus(
+                                                patientDetails.mentalHealthDetails.finalScores[
+                                                    patientDetails.mentalHealthDetails.finalScores.length - 1
+                                                ]
+                                            ).status}
+                                        </span>
+                                    </div>
+
+                                    <div className="text-2xl font-bold text-[#1a5252] mb-3">
+                                        {formatScore(patientDetails.mentalHealthDetails.finalScores[
+                                            patientDetails.mentalHealthDetails.finalScores.length - 1
+                                        ])}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs text-gray-500">Childhood</span>
+                                            <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.childhoodScores[patientDetails.mentalHealthDetails.childhoodScores.length - 1])}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs text-gray-500">PHQ-9</span>
+                                            <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.PHQ9Scores[patientDetails.mentalHealthDetails.PHQ9Scores.length - 1])}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-xs text-gray-500">Sentiment</span>
+                                            <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.sentimentScores[patientDetails.mentalHealthDetails.sentimentScores.length - 1])}</span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    // Expanded view
+                    <div className="grid grid-cols-2 gap-6 mt-4">
+                        {/* Personal Information */}
+                        <div className="space-y-4">
+                            <h4 className="font-googleSansBold text-gray-800">Personal Information</h4>
+                            <div className="grid gap-4">
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Gender</p>
+                                    <p className="font-medium">{patientDetails.personalDetails.gender}</p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Date of Birth</p>
+                                    <p className="font-medium">
+                                        {`${patientDetails.personalDetails.date}/${patientDetails.personalDetails.month}/${patientDetails.personalDetails.year}`}
+                                    </p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Marital Status</p>
+                                    <p className="font-medium">{patientDetails.personalDetails.maritalStatus}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contact Information */}
+                        <div className="space-y-4">
+                            <h4 className="font-googleSansBold text-gray-800">Contact Information</h4>
+                            <div className="grid gap-4">
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Address</p>
+                                    <p className="font-medium">
+                                        {`${patientDetails.contactDetails.apartmentNumber}, ${patientDetails.contactDetails.street}`}
+                                    </p>
+                                    <p className="font-medium">
+                                        {`${patientDetails.contactDetails.city}, ${patientDetails.contactDetails.state}`}
+                                    </p>
+                                    <p className="font-medium">{patientDetails.contactDetails.country}</p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Phone</p>
+                                    <p className="font-medium">{patientDetails.contactDetails.contactNumber}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Medical Information */}
+                        <div className="space-y-4 col-span-2">
+                            <h4 className="font-googleSansBold text-gray-800">Medical Information</h4>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Allergies</p>
+                                    <p className="font-medium">{patientDetails.medicalDetails.allergies || 'None'}</p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Medical Conditions</p>
+                                    <p className="font-medium">
+                                        {[
+                                            patientDetails.medicalDetails.isDiabetic && 'Diabetic',
+                                            patientDetails.medicalDetails.isHypertension && 'Hypertension'
+                                        ].filter(Boolean).join(', ') || 'None'}
+                                    </p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Disabilities</p>
+                                    <p className="font-medium">{patientDetails.personalDetails.disabilities || 'None'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Lifestyle Information */}
+                        <div className="space-y-4 col-span-2">
+                            <h4 className="font-googleSansBold text-gray-800">Lifestyle Information</h4>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Smoking Status</p>
+                                    <p className="font-medium">{patientDetails.lifeStyleDetails.smokingStatus}</p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Alcohol Consumption</p>
+                                    <p className="font-medium">{patientDetails.lifeStyleDetails.alcoholConsumption}</p>
+                                </div>
+                                <div className="p-4 bg-gray-50 rounded-lg">
+                                    <p className="text-sm text-gray-500">Exercise Habit</p>
+                                    <p className="font-medium">{patientDetails.lifeStyleDetails.exerciseHabit}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 )}
-            </div>
 
-            <div className="flex flex-col items-center" onClick={() => !isExpanded && setIsExpanded(true)}>
-                <div className="w-20 h-20 bg-[#d4eceb] rounded-full flex items-center justify-center mb-3">
-                    <span className="text-[#1a5252] text-3xl font-semibold cursor-pointer">
-                        {patientDetails.credentials.name.charAt(0)}
-                    </span>
+                {/* Footer buttons section */}
+                <div className="mt-auto flex flex-col gap-3">
+                    <button 
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full bg-[#1a5252] text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#153f3f] transition-colors"
+                    >
+                        <Calendar size={18} />
+                        Schedule Appointment
+                    </button>
+
+                    <button
+                        onClick={() => setIsIFrameOpen(true)}
+                        className="w-full bg-[#1a5252]/90 text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#153f3f] transition-colors"
+                    >
+                        <BiTestTube size={18} />
+                        Chat with AI Assistant
+                    </button>
                 </div>
-                <h3 className="text-lg font-googleSansBold text-gray-800">
-                    {patientDetails.credentials.name}
-                </h3>
-                <p className="text-sm text-gray-500">Patient ID: {patientDetails.credentials.healthID}</p>
-            </div>
+            </motion.div>
 
-            {/* Conditional rendering based on expanded state */}
-            {!isExpanded ? (
-                // Compact view
-                <>
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3">
-                            <User size={18} className="text-[#1a5252]" />
-                            <div>
-                                <p className="text-sm text-gray-500">Age</p>
-                                <p className="font-medium">{patientDetails.personalDetails.age} years</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Phone size={18} className="text-[#1a5252]" />
-                            <div>
-                                <p className="text-sm text-gray-500">Contact</p>
-                                <p className="font-medium">{patientDetails.contactDetails.contactNumber}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Mail size={18} className="text-[#1a5252]" />
-                            <div>
-                                <p className="text-sm text-gray-500">Email</p>
-                                <p className="font-medium">{patientDetails.credentials.email}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <MapPin size={18} className="text-[#1a5252]" />
-                            <div>
-                                <p className="text-sm text-gray-500">Location</p>
-                                <p className="font-medium">{patientDetails.contactDetails.city}, {patientDetails.contactDetails.state}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Latest Test Insights Section */}
-                    <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                        <div className="flex items-center justify-between mb-3">
-                            <h4 className="text-sm font-googleSansBold text-gray-700">Latest Test Results</h4>
-                            <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
-                                Test #{patientDetails.mentalHealthDetails.testIDs.length}
-                            </span>
-                        </div>
-
-                        {patientDetails.mentalHealthDetails.testIDs.length > 0 && (
-                            <>
-                                <div className="mb-3">
-                                    <span className="px-2 py-1 text-xs rounded-full" 
-                                        style={{ 
-                                            backgroundColor: getMentalHealthStatus(
-                                                patientDetails.mentalHealthDetails.finalScores[
-                                                    patientDetails.mentalHealthDetails.finalScores.length - 1
-                                                ]
-                                            ).color + '20',
-                                            color: getMentalHealthStatus(
-                                                patientDetails.mentalHealthDetails.finalScores[
-                                                    patientDetails.mentalHealthDetails.finalScores.length - 1
-                                                ]
-                                            ).color 
-                                        }}
-                                    >
-                                        {getMentalHealthStatus(
-                                            patientDetails.mentalHealthDetails.finalScores[
-                                                patientDetails.mentalHealthDetails.finalScores.length - 1
-                                            ]
-                                        ).status}
-                                    </span>
-                                </div>
-
-                                <div className="text-2xl font-bold text-[#1a5252] mb-3">
-                                    {formatScore(patientDetails.mentalHealthDetails.finalScores[
-                                        patientDetails.mentalHealthDetails.finalScores.length - 1
-                                    ])}
-                                </div>
-
-                                <div className="grid grid-cols-1 gap-2">
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs text-gray-500">Childhood</span>
-                                        <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.childhoodScores[patientDetails.mentalHealthDetails.childhoodScores.length - 1])}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs text-gray-500">PHQ-9</span>
-                                        <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.PHQ9Scores[patientDetails.mentalHealthDetails.PHQ9Scores.length - 1])}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="text-xs text-gray-500">Sentiment</span>
-                                        <span className="text-xs font-medium">{formatScore(patientDetails.mentalHealthDetails.sentimentScores[patientDetails.mentalHealthDetails.sentimentScores.length - 1])}</span>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </>
-            ) : (
-                // Expanded view
-                <div className="grid grid-cols-2 gap-6 mt-4">
-                    {/* Personal Information */}
-                    <div className="space-y-4">
-                        <h4 className="font-googleSansBold text-gray-800">Personal Information</h4>
-                        <div className="grid gap-4">
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Gender</p>
-                                <p className="font-medium">{patientDetails.personalDetails.gender}</p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Date of Birth</p>
-                                <p className="font-medium">
-                                    {`${patientDetails.personalDetails.date}/${patientDetails.personalDetails.month}/${patientDetails.personalDetails.year}`}
-                                </p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Marital Status</p>
-                                <p className="font-medium">{patientDetails.personalDetails.maritalStatus}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Contact Information */}
-                    <div className="space-y-4">
-                        <h4 className="font-googleSansBold text-gray-800">Contact Information</h4>
-                        <div className="grid gap-4">
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Address</p>
-                                <p className="font-medium">
-                                    {`${patientDetails.contactDetails.apartmentNumber}, ${patientDetails.contactDetails.street}`}
-                                </p>
-                                <p className="font-medium">
-                                    {`${patientDetails.contactDetails.city}, ${patientDetails.contactDetails.state}`}
-                                </p>
-                                <p className="font-medium">{patientDetails.contactDetails.country}</p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Phone</p>
-                                <p className="font-medium">{patientDetails.contactDetails.contactNumber}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Medical Information */}
-                    <div className="space-y-4 col-span-2">
-                        <h4 className="font-googleSansBold text-gray-800">Medical Information</h4>
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Allergies</p>
-                                <p className="font-medium">{patientDetails.medicalDetails.allergies || 'None'}</p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Medical Conditions</p>
-                                <p className="font-medium">
-                                    {[
-                                        patientDetails.medicalDetails.isDiabetic && 'Diabetic',
-                                        patientDetails.medicalDetails.isHypertension && 'Hypertension'
-                                    ].filter(Boolean).join(', ') || 'None'}
-                                </p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Disabilities</p>
-                                <p className="font-medium">{patientDetails.personalDetails.disabilities || 'None'}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Lifestyle Information */}
-                    <div className="space-y-4 col-span-2">
-                        <h4 className="font-googleSansBold text-gray-800">Lifestyle Information</h4>
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Smoking Status</p>
-                                <p className="font-medium">{patientDetails.lifeStyleDetails.smokingStatus}</p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Alcohol Consumption</p>
-                                <p className="font-medium">{patientDetails.lifeStyleDetails.alcoholConsumption}</p>
-                            </div>
-                            <div className="p-4 bg-gray-50 rounded-lg">
-                                <p className="text-sm text-gray-500">Exercise Habit</p>
-                                <p className="font-medium">{patientDetails.lifeStyleDetails.exerciseHabit}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Appointment Button */}
-            <button className="mt-auto w-full bg-[#1a5252] text-white py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-[#153f3f] transition-colors">
-                <Calendar size={18} />
-                Schedule Appointment
-            </button>
-        </motion.div>
+            <AppointmentModal 
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
+            
+            <IFrameModal 
+                isOpen={isIFrameOpen}
+                onClose={() => setIsIFrameOpen(false)}
+            />
+        </>
     );
 };
 
@@ -493,12 +596,9 @@ const AssessmentHistoryRow = ({ testId, index, finalScore, healthID }) => {
 
     const formatDate = (testId) => {
         const today = new Date();
-        // Try to parse the testId as a timestamp
         const parsedDate = new Date(parseInt(testId));
         
-        // Check if the parsed date is valid
         if (isNaN(parsedDate.getTime())) {
-            // If invalid, return today's date
             return today.toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -506,7 +606,6 @@ const AssessmentHistoryRow = ({ testId, index, finalScore, healthID }) => {
             });
         }
 
-        // If valid, return the parsed date
         return parsedDate.toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric',
@@ -741,14 +840,10 @@ function PatientDashboard() {
     }, [healthID]);
 
     const getMentalHealthStatus = (score) => {
-        if (score <= 0.23) return { status: 'No Depression', color: '#22c55e' };  // Green
-        if (score <= 0.42) return { status: 'Mild Depression', color: '#facc15' }; // Yellow
-        if (score <= 0.71) return { status: 'Moderate Depression', color: '#f97316' }; // Orange
-        return { status: 'Severe Depression', color: '#ef4444' }; // Red
-    };
-
-    const formatScore = (score) => {
-        return parseFloat(score).toFixed(3);
+        if (score <= 0.23) return { status: 'No Depression', color: '#22c55e' };
+        if (score <= 0.42) return { status: 'Mild Depression', color: '#facc15' };
+        if (score <= 0.71) return { status: 'Moderate Depression', color: '#f97316' };
+        return { status: 'Severe Depression', color: '#ef4444' };
     };
 
     const prepareGraphData = (testIDs, scores) => {
@@ -769,12 +864,6 @@ function PatientDashboard() {
             </div>
         );
     }
-
-    const today = new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
 
     return (
         <>
@@ -820,8 +909,6 @@ function PatientDashboard() {
                         </div>
 
                         <div className="px-14 bg-gradient-to-br from-gray-50/50 to-gray-100/50">
-                            {/* Rest of the content */}
-                            {/* Score Cards - First Row */}
                             <div className={`grid ${isSidePanelExpanded ? 'grid-cols-1' : 'grid-cols-2'} gap-6 mb-8`}>
                                 <motion.div layout>
                                     <ScoreGraph 
@@ -861,7 +948,6 @@ function PatientDashboard() {
                                 </motion.div>
                             </div>
 
-                            {/* Unified Graph */}
                             <div className="my-10 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl">
                                 <UnifiedGraph data={prepareUnifiedData(patientDetails.mentalHealthDetails)} />
                             </div>
@@ -899,8 +985,6 @@ function PatientDashboard() {
                                     </ScrollableContainer>
                                 </div>
                             </div>
-
-                            
                         </div>
                     </ScrollableContainer>
                     
