@@ -2,8 +2,8 @@
     "teamMembers": [
         {
             "name": "Aayush Gupta",
-            "role": "Full Stack Developer",
-            "description": "Full Stack developer, managing core workflows and essential user features. Aayush's contributions ensure that checkMate operates smoothly, providing a cohesive and efficient experience for document management.",
+            "role": "Game Zone Developer",
+            "description": "Responsible for crafting the Well Wise Game Zone, Aayush designed interactive and therapeutic games aimed at uplifting users' moods. His work helps users combat stress and depression through engaging, mood-boosting gameplay experiences.",
             "img": "/teamMembers/aayushImg.jpg",
             "socialLinks": [
                 { "url": "https://www.instagram.com/_.aayush.gupta._/", "icon": "instagram" },
@@ -12,8 +12,8 @@
         },
         {
             "name": "Aman Kumar",
-            "role": "Blockchain/Full Stack Developer",
-            "description": "Blockchain and Full Stack developer, focused on secure, decentralized document storage for checkMate. Aman also leads UI design, creating an intuitive interface that enhances user experience.",
+            "role": "Blockchain & Full Stack Developer",
+            "description": "Responsible for building the entire blockchain infrastructure of Well Wise using Solidity and Web3. Aman created all smart contracts, configured the blockchain network, and ensured seamless integration with the frontend. He also designed and developed the complete UI, including the dashboard and all core components, enabling secure on-chain data storage and an intuitive user experience.",
             "img": "/teamMembers/amanImg.jpg",
             "socialLinks": [
                 { "url": "https://www.instagram.com/amanwhoooo/", "icon": "instagram" },
@@ -23,7 +23,7 @@
         {
             "name": "Sparsh Jaggi",
             "role": "AI/ML Developer",
-            "description": "AI/ML developer, implementing advanced AI models for document analysis and verification. Sparsh's contributions in computer vision enable precise document checks, automating verification steps.",
+            "description": "AI/ML Developer responsible for integrating the intelligent chatbot in Well Wise, trained on personalized mental health data to offer supportive conversations. Sparsh also modeled the tone analysis system, enabling accurate emotional interpretation from user responses for deeper psychological insights.",
             "img": "/teamMembers/sparshImg.jpeg",
             "socialLinks": [
                 { "url": "https://www.instagram.com/sparshjaggi/", "icon": "instagram" },
@@ -32,8 +32,8 @@
         },
         {
             "name": "Anshdeep Shrivastav",
-            "role": "ML/Full Stack Developer",
-            "description": "ML/Backend developer, managing backend integration and processing pipelines. Ansh's machine learning expertise optimizes document data flow and enables accurate, reliable backend operations.",
+            "role": "ML/Backend Developer",
+            "description": "ML and Backend Developer in charge of building the audio-to-text conversion pipeline for Well Wise, enabling voice input analysis. Anshdeep also developed the core backend logic that processes test responses and calculates the user's overall mental health score, ensuring accuracy and performance.",
             "img": "/teamMembers/anshImg.jpg",
             "socialLinks": [
                 { "url": "https://www.instagram.com/ansh_d23/", "icon": "instagram" },

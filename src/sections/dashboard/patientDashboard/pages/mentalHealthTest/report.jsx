@@ -7,6 +7,48 @@ import axios from "axios";
 import gemini from '/animations/gemini.gif';
 
 import Web3 from 'web3';
+import { motion, AnimatePresence } from 'framer-motion';
+import Typewriter from 'typewriter-effect';
+import styled from '@emotion/styled';
+
+const ScrollableContainer = styled.div`
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+`;
+
+const AnimatedText = ({ text, delay }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay }}
+        className="preserve-whitespace"
+    >
+        {text}
+    </motion.div>
+);
+
+const AdviceStep = ({ step, description, index, totalSteps }) => {
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.5 }} // Sequential delay
+            className="bg-gray-50 rounded-xl p-6 shadow-sm mb-4"
+        >
+            <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.5 + 0.2 }}
+                className="text-gray-800"
+            >
+                {`${step}. ${description}`}
+            </motion.p>
+        </motion.div>
+    );
+};
 
 function Report() {
     const { healthID, testID } = useParams();
@@ -251,63 +293,64 @@ function Report() {
     
 
     return (
-        <>
-            <div className="w-full min-h-screen bg-green-50 p-6 md:p-12 font-sans">
-                <div className="max-w-4xl mx-auto space-y-8">
-                    <div className="text-center">
-                        <h1 className="text-4xl md:text-6xl font-bold text-green-800 mb-4 animate-gemini">
-                            Depression Score
+        <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+            <div className="max-w-7xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }}animate={{ opacity: 1, y: 0 }}className="bg-white rounded-[40px] shadow-xl p-8 mb-8" >
+                    <img src={gemini} alt="Gemini" className="absolute w-32 ml-20 opacity-50" />
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl font-bold text-[#1a5252] mb-4">
+                            Mental Health Assessment Results
                         </h1>
 
-                        <div className="inline-block bg-white rounded-2xl border-4 border-green-600 p-6 shadow-lg">
-                            <span className="text-5xl md:text-7xl font-bold text-green-600 animate-pulse">
-                                {depressionScore} / 100
+                        <div className="inline-block bg-[#1a5252]/10 rounded-2xl p-6">
+                            <span className="text-5xl font-bold text-[#1a5252]">
+                                {depressionScore.toFixed(1)}%
                             </span>
                         </div>
                     </div>
 
-                    <div className="flex justify-center">
-                        <button onClick={handleSubmit} className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-xl transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" >
-                            Get Advice
+                    <div className="flex justify-center gap-10 mt-8">
+                        <button onClick={handleSubmit} className="bg-[#1a5252] hover:bg-[#153f3f] text-white font-bold py-3 px-6 rounded-lg text-xl transition duration-300 ease-in-out transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#1a5252] focus:ring-opacity-50" >
+                            Get AI Advice
                         </button>
-                    </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6 mt-8">
-                        {response ? (
-                            <div className="space-y-4">
-                                <h2 className="text-3xl font-bold text-green-800 animate-gemini">
-                                    Advice for {response.name}
-                                </h2>
-
-                                <p className="text-xl text-green-600 font-semibold animate-gemini">
-                                    Severity: {response.severity}
-                                </p>
-
-                                <ol className="list-decimal list-inside space-y-2">
-                                    {response.advice.slice(0, 10).map((step, index) => (
-                                    <li key={index} className="text-lg animate-gemini">
-                                        <span className="font-bold">Step {step.step}:</span> {step.description}
-                                    </li>
-                                    ))}
-                                </ol>
-                            </div>
-                        ) : (
-                            <p className="text-xl text-center text-gray-600 animate-pulse">
-                                Waiting for advice...
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="text-center">
-                        <Link to={`/patient/${healthID}/mht/${testID}`} className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-xl transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" >
-                            DONE
+                        <Link to={`/patient/${healthID}/mht/${testID}`} className="inline-block bg-[#1a5252] hover:bg-[#153f3f] text-white font-bold py-3 px-8 rounded-lg text-xl transition duration-300 ease-in-out transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#1a5252] focus:ring-opacity-50" >
+                            Back to Dashboard
                         </Link>
                     </div>
-                </div>
+                </motion.div>
 
-                <img src={gemini} alt="" className="w-[500px] absolute top-36 -left-10"/>
+                <AnimatePresence>
+                    {response && (
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="bg-white rounded-[40px] shadow-xl p-8" >
+                            <div className="relative"> 
+                                <div className="space-y-6">
+                                    <div className="mb-8">
+                                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl font-bold text-gray-800" >
+                                            <AnimatedText text={`Analysis for ${response.name}`}delay={0} />
+                                        </motion.div>
+
+                                        <motion.div className="mt-4 text-xl text-gray-600">
+                                            <AnimatedText text={`Severity: ${response.severity}`}delay={0.5} />
+                                        </motion.div>
+                                    </div>
+
+                                    <ScrollableContainer className="space-y-4 max-h-[60vh] overflow-y-auto pr-4">
+                                        {response.advice.map((step, index) => (
+                                            <AdviceStep key={index} step={step.step} description={step.description} index={index} totalSteps={response.advice.length} />
+                                        ))}
+                                    </ScrollableContainer>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* <div className="text-center mt-8">
+                    
+                </div> */}
             </div>
-        </>
+        </div>
     );
 }
 

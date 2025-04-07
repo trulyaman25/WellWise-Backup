@@ -34,7 +34,7 @@ const ScoreGraph = ({ data, dataKey, color, title, icon }) => {
             onClick={() => setIsExpanded(!isExpanded)}
             className="w-full bg-white p-6 rounded-2xl shadow-sm border border-gray-100 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg" 
         >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between ">
                 <div className="flex items-center gap-2">
                     <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>
                         {icon}
@@ -142,7 +142,7 @@ const UnifiedGraph = ({ data }) => {
                     ))}
                 </div>
             </div>
-            <div className="h-[300px] sm:h-[400px] relative">
+            <div className="h-[250px] relative">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/5 pointer-events-none rounded-lg" />
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart 
@@ -238,7 +238,12 @@ const prepareUnifiedData = (details) => {
     }));
 };
 
+import RazorpayButton from '../components/payment';
+
 const AppointmentModal = ({ isOpen, onClose }) => {
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -255,7 +260,7 @@ const AppointmentModal = ({ isOpen, onClose }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.5, opacity: 0 }}
           transition={{ type: "spring", duration: 0.5 }}
-          className="bg-white rounded-xl p-6 w-[600px] shadow-2xl"
+          className="bg-white rounded-xl p-6 w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-6">
@@ -267,28 +272,110 @@ const AppointmentModal = ({ isOpen, onClose }) => {
               <X size={20} className="text-gray-500" />
             </button>
           </div>
-          
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <p className="text-gray-600 mb-4">You'll be redirected to Google Meet for scheduling your appointment.</p>
-            <p className="text-sm text-gray-500">Note: Please ensure you're logged into your Google account.</p>
+
+          <div className="grid gap-6">
+            {/* Doctor 1 */}
+            <div className="p-4 rounded-lg border transition-all border-gray-200 hover:border-[#1a5252]/50">
+              <div className="flex items-center gap-4">
+                <img 
+                  src="https://d35oenyzp35321.cloudfront.net/dr_chandrashekhar_website_pho_a247967e1e.jpg" 
+                  alt="Dr. Michael Chen" 
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="text-lg font-medium text-gray-900">Dr. Michael Chen</h4>
+                  <p className="text-[#1a5252] font-medium">Psychiatrist</p>
+                  <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    <span>12 years experience</span>
+                    <span>Available: Tue, Thu, Sat</span>
+                  </div>
+                </div>
+                <div className="text-right flex flex-col items-end gap-2">
+                  <p className="text-lg font-medium text-gray-900">₹ 800</p>
+                  <div className="flex gap-2">
+                    <RazorpayButton />
+                    <button 
+                      onClick={() => window.open('https://meet.google.com', '_blank')}
+                      className="px-4 py-2 bg-[#1a5252] text-white rounded-md hover:bg-[#153f3f] transition-colors"
+                    >
+                      Join Meeting
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Doctor 2 */}
+            <div className="p-4 rounded-lg border transition-all border-gray-200 hover:border-[#1a5252]/50">
+              <div className="flex items-center gap-4">
+                <img 
+                  src="https://pbs.twimg.com/profile_images/1364936684958142464/k18b5LN3_400x400.jpg" 
+                  alt="Dr. Gajendra Purohit" 
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="text-lg font-medium text-gray-900">Dr. Gajendra Purohit</h4>
+                  <p className="text-[#1a5252] font-medium">Clinical Psychologist</p>
+                  <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    <span>15 years experience</span>
+                    <span>Available: Mon, Wed, Fri</span>
+                  </div>
+                </div>
+                <div className="text-right flex flex-col items-end gap-2">
+                  <p className="text-lg font-medium text-gray-900">₹ 1000</p>
+                  <div className="flex gap-2">
+                    <RazorpayButton />
+                    <button 
+                      onClick={() => window.open('https://meet.google.com', '_blank')}
+                      className="px-4 py-2 bg-[#1a5252] text-white rounded-md hover:bg-[#153f3f] transition-colors"
+                    >
+                      Join Meeting
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Doctor 3 */}
+            <div className="p-4 rounded-lg border transition-all border-gray-200 hover:border-[#1a5252]/50">
+              <div className="flex items-center gap-4">
+                <img 
+                  src="https://admin.seekmed.care/storage/uploads/doctors//dr-jalpa-bhuta-1611574216.jpg" 
+                  alt="Jalpa Bhuta" 
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="text-lg font-medium text-gray-900">Jalpa Bhuta</h4>
+                  <p className="text-[#1a5252] font-medium">Behavioral Therapist</p>
+                  <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                    <span>10 years experience</span>
+                    <span>Available: Mon, Thu, Sat</span>
+                  </div>
+                </div>
+                <div className="text-right flex flex-col items-end gap-2">
+                  <p className="text-lg font-medium text-gray-900">₹ 700</p>
+                  <div className="flex gap-2">
+                    <RazorpayButton />
+                    <button 
+                      onClick={() => window.open('https://meet.google.com', '_blank')}
+                      className="px-4 py-2 bg-[#1a5252] text-white rounded-md hover:bg-[#153f3f] transition-colors"
+                    >
+                      Join Meeting
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex justify-end gap-4">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-            >
-              Cancel
-            </button>
-            <a
-              href="https://meet.google.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-[#1a5252] text-white rounded-lg hover:bg-[#153f3f] transition-colors flex items-center gap-2"
-            >
-              <Calendar size={18} />
-              Continue to Google Meet
-            </a>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600">
+              • Payment is required to schedule an appointment
+              <br />
+              • You'll be redirected to Google Meet after successful payment
+              <br />
+              • Consultation duration: 45 minutes
+            </p>
           </div>
         </motion.div>
       </motion.div>

@@ -1,0 +1,48 @@
+.texture-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(34, 113, 118, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 113, 118, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: moveBackground 15s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 20px;
+  }
+}
+
+.gradient-bg {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(34, 113, 118, 0.3),
+    rgba(34, 113, 118, 0.1),
+    transparent 50%
+  );
+  filter: blur(100px);
+  animation: rotateGradient 20s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes rotateGradient {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}

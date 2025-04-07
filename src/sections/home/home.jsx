@@ -7,8 +7,9 @@ import LandingImage from '/landingPageImg.jpg';
 import IllustrationOne from '/illustration/homeIllustrationOne.webp';
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import { useCallback } from "react";
 import { useState, useEffect } from "react";
+import './home.css';
 
 function Home() {
     const { teamMembers } = teamData;
@@ -47,9 +48,10 @@ function Home() {
 
     return (
         <>
-            <div className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-32 py-32">
+            <div className="w-full min-h-screen flex flex-col justify-center items-center px-4 md:px-8 lg:px-32 py-32 relative overflow-hidden">
+                <div className="gradient-bg"></div>
                 <motion.div id='home' initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
-                    className="w-full flex flex-col lg:flex-row justify-between items-center gap-10" >
+                    className="w-full flex flex-col lg:flex-row justify-between items-center gap-10 relative" >
                     <motion.div initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}
                         className="flex flex-col justify-center items-center lg:items-start px-4 lg:pl-20 gap-7 order-2 lg:order-1" >
                         <div className="h-fit font-googleSansBold text-center lg:text-left">
@@ -72,14 +74,15 @@ function Home() {
                         </motion.button>
                     </motion.div>
 
-                    <motion.div className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center items-center">
+                    <motion.div className="w-full lg:w-1/2 order-1 lg:order-2 flex justify-center items-center relative">
+                        <div className="texture-bg"></div>
                         <motion.img 
                             initial={{ x: 100, opacity: 0 }}
                             animate={{ x: position.x, y: position.y, opacity: 1 }}
                             transition={{ duration: 1, ease: "easeInOut" }}
                             src={LandingImage}
                             alt="Landing Image"
-                            className="w-[80%] md:w-[70%] lg:w-full h-auto object-contain"
+                            className="w-[80%] md:w-[70%] lg:w-full h-auto object-contain relative z-10"
                         />
                     </motion.div>
                 </motion.div>
@@ -184,7 +187,7 @@ function Home() {
                                     {member.role}
                                 </h3>
 
-                                <p className="text-gray-500 font-albulaRegular text-sm leading-relaxed line-clamp-3">
+                                <p className="text-gray-500 font-albulaRegular text-sm leading-relaxed line-clamp-6">
                                     {member.description}
                                 </p>
                             </div>

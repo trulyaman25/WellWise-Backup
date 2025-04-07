@@ -8,6 +8,13 @@ import questionData from '../../../data/questionData.json';
 function SentimentAnalysis({ step, patientDetails, tID }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({ textResponse: "", textTwo: "" });
+    const [isRecording, setIsRecording] = useState(false);
+    const [audioBlob, setAudioBlob] = useState(null);
+    const [audioUrl, setAudioUrl] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [ipfsHash, setIpfsHash] = useState(null);
+    const mediaRecorderRef = useRef(null);
+    const chunksRef = useRef([]);
 
     const navigate = useNavigate();
     const {healthID} = useParams();
@@ -36,13 +43,134 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
         }
     };
 
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'audio/webm'
+            });
+            mediaRecorderRef.current = mediaRecorder;
+            chunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                chunksRef.current.push(e.data);
+            };
+
+            mediaRecorder.onstop = async () => {
+                const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
+                setAudioBlob(audioBlob);
+                setAudioUrl(URL.createObjectURL(audioBlob));
+                await uploadToPinata(audioBlob);
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+        } catch (error) {
+            console.error('Error accessing microphone:', error);
+            alert('Error accessing microphone');
+        }
+    };
+
+    const stopRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+            setIsRecording(false);
+        }
+    };
+
+    const uploadToPinata = async (audioBlob) => {
+        setIsUploading(true);
+        try {
+            const file = new File([audioBlob], 'audio.webm', { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await axios.post(
+                'https://api.pinata.cloud/pinning/pinFileToIPFS',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        pinata_api_key: '04b26ee360171f03ae2b',
+                        pinata_secret_api_key: '250fe3ce90862d18f94ced6c065a6bec5a956d528aef8ab9d737a9b3f0ca8065',
+                    },
+                }
+            );
+
+            setIpfsHash(response.data.IpfsHash);
+        } catch (error) {
+            console.error('Error uploading to Pinata:', error);
+            alert('Error uploading audio');
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const renderInputSection = () => {
+        if (currentQuestion === 0) {
+            return (
+                <textarea
+                    className="w-full h-[300px] font-albulaRegular p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#266666]"
+                    placeholder="Type your response here..."
+                    value={answers.textResponse}
+                    onChange={handleTextChange}
+                />
+            );
+        } else {
+            return (
+                <div className="space-y-4">
+                    <textarea
+                        className="w-full h-[150px] font-albulaRegular p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#266666]"
+                        placeholder="Type your response here..."
+                        value={answers.textTwo}
+                        onChange={handleTextChange}
+                    />
+                    
+                    <div className="flex flex-col space-y-4 mt-4">
+                        <div className="flex items-center space-x-4">
+                            <button
+                                onClick={isRecording ? stopRecording : startRecording}
+                                disabled={isUploading}
+                                className={`px-6 py-2 rounded-xl text-white font-albulaBold ${
+                                    isRecording ? 'bg-red-500' : 'bg-[#266666]'
+                                } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            >
+                                {isRecording ? 'Stop Recording' : 'Start Recording'}
+                            </button>
+                            {isUploading && <span className="text-gray-600">Uploading...</span>}
+                        </div>
+                        {audioUrl && (
+                            <div className="flex flex-col space-y-2">
+                                <audio controls src={audioUrl} className="w-full" />
+                                {ipfsHash && (
+                                    <div className="bg-gray-50 p-4 rounded-lg">
+                                        <p className="text-sm text-gray-600">Audio stored on IPFS:</p>
+                                        <a 
+                                            href={`https://gateway.pinata.cloud/ipfs/${ipfsHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-[#266666] hover:underline break-all"
+                                        >
+                                            {ipfsHash}
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
     
         try {
             const payload = {
                 text_1: answers.textResponse,
-                text_2: answers.textTwo,
+                text_2_ipfs: ipfsHash
             };
     
             const response = await fetch("http://localhost:5000/process_sentiment", {
@@ -71,7 +199,7 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
                 .initializeSentimentDetails(
                     tID, 
                     answers.textResponse, 
-                    answers.textTwo,
+                    result.text_2, // Use transcribed text from backend
                     result.ml_s1,
                     result.ml_s2,
                     result.score.toString()
@@ -120,19 +248,7 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
                             {questions[currentQuestion].text}
                         </p>
 
-                        {questions[currentQuestion].type === "text" && (
-                            <textarea
-                                className="w-full h-[300px] font-albulaRegular p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#266666]"
-                                rows="4"
-                                placeholder="Type your response here..."
-                                value={
-                                    currentQuestion === 0
-                                        ? answers.textResponse
-                                        : answers.textTwo
-                                }
-                                onChange={handleTextChange}
-                            ></textarea>
-                        )}
+                        {renderInputSection()}
                     </div>
                 </div>
 
