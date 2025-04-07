@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react"
+
 import Home from "./sections/home/home";
 import Login from "./sections/auth/login/login";
 import Register from "./sections/auth/register/register";
@@ -28,6 +30,7 @@ function HomeRendering() {
         <>
             <Header />
             <Home />
+            <Analytics />
             <Footer />
         </>
     )
