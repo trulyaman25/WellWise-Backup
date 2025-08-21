@@ -49,7 +49,9 @@ const ScoreGraph = ({ data = [], dataKey = 'score', color = '#8b5cf6', title = '
                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                         <XAxis dataKey="testId" stroke="#666" fontSize={12} tickLine={false} axisLine={false} />
                         <YAxis stroke="#666" fontSize={12} tickLine={false} axisLine={false} tick={false} />
-                        <Tooltip contentStyle={{ backgroundColor: '#fff',border: 'none',borderRadius: '8px',boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)' }}labelStyle={{ color: '#666' }}formatter={(value) => [Number(value).toFixed(3), "Score"]} />
+                        
+                        <Tooltip contentStyle={{ backgroundColor: '#fff',border: 'none',borderRadius: '8px',boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)' }} labelStyle={{ color: '#666' }} formatter={(value) => [Number(value).toFixed(3), "Score"]} />
+                        
                         <Area type="monotone" dataKey={dataKey} stroke={color} fillOpacity={1} fill={`url(#${gradientId})`} />
                         <Line type="monotone" dataKey={dataKey} stroke={color} strokeWidth={2} dot={{ r: 4, strokeWidth: 2, fill: "#fff", stroke: color }} activeDot={{ r: 6, strokeWidth: 0, fill: color }} />
                     </LineChart>

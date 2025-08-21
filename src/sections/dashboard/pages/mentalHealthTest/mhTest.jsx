@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import PatientRegistration from '../../../../../build/contracts/PatientRegistration.json';
-import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
+import PatientRegistration from '../../../../build/contracts/PatientRegistration.json';
+import MentalHealth from '../../../../build/contracts/MentalHealth.json';
 import Web3 from 'web3';
 
 import WellWiseLogo from '/favicon.png';

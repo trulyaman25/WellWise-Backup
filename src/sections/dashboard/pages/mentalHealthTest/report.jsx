@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
-import PatientRegistration from '../../../../../build/contracts/PatientRegistration.json';
-import '../../../../../globalStyles.css';
+import MentalHealth from '../../../../build/contracts/MentalHealth.json';
+import PatientRegistration from '../../../../build/contracts/PatientRegistration.json';
+import '../../../../globalStyles.css';
 import axios from "axios";
 import gemini from '/animations/gemini.gif';
 

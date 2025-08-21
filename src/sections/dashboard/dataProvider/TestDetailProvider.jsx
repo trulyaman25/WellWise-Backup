@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3 from 'web3';
-import MentalHealth from '../../../../build/contracts/MentalHealth.json';
+import MentalHealth from '../../../build/contracts/MentalHealth.json';
 
 const TestDetailContext = createContext(null);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from "web3";
-import MentalHealth from '../../../../../../build/contracts/MentalHealth.json';
+import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
 
 function PHQ9Section({ step, patientDetails, tID }) {
     const handleSubmit = async (e) => {

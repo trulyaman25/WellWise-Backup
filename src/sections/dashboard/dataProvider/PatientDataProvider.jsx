@@ -2,8 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { useParams } from 'react-router-dom';
 
-import PatientRegistration from '../../../../build/contracts/PatientRegistration.json';
-import MentalHealth from '../../../../build/contracts/MentalHealth.json';
+import PatientRegistration from '../../../build/contracts/PatientRegistration.json';
+import MentalHealth from '../../../build/contracts/MentalHealth.json';
 
 const PatientDataContext = createContext(null);
 

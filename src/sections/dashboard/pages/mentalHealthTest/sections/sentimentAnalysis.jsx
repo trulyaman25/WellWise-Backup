@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import Web3 from "web3";
 import axios from "axios";
-import MentalHealth from "../../../../../../build/contracts/MentalHealth.json";
+import MentalHealth from "../../../../../build/contracts/MentalHealth.json";
 import { useNavigate, useParams } from "react-router-dom";
 import questionData from '../../../essentialData/questionData.json';
 

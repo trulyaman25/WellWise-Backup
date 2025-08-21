@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Web3 from 'web3';
-import MentalHealth from '../../../../../../build/contracts/MentalHealth.json';
+import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
 import questionData from '../../../essentialData/questionData.json';
 
 function ChildhoodSection({ step, patientDetails, tID }) {

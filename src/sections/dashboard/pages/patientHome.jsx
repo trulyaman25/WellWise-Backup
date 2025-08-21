@@ -12,7 +12,7 @@ import UnifiedGraph from '../components/mainDashboard_components/UnifiedGraph';
 
 import { usePatientData } from '../dataProvider/PatientDataProvider';
 
-import '../../../../globalStyles.css'
+import '../../../globalStyles.css'
 
 const prepareUnifiedData = (details) => {
     return details.testIDs.map((testId, index) => ({
