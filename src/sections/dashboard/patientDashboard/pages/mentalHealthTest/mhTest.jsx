@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import PatientRegistration from '../../../../../build/contracts/PatientRegistration.json';
 import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
@@ -16,8 +16,6 @@ import SentimentAnalysis from "./sections/sentimentAnalysis";
 import Disclaimer from "./mhtDisclaimer.jsx";
 import VideoFeed from "./videoFeed.jsx"
 
-import PopUp from "./report.jsx";
-
 function PatientMentalHealthDashboard() {
     const [showDisclaimer, setShowDisclaimer] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -33,8 +31,6 @@ function PatientMentalHealthDashboard() {
         sectionOne: 0,
         sectionTwo: 0
     });
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         const init = async () => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Web3 from 'web3';
 import MentalHealth from '../../../../../../build/contracts/MentalHealth.json';
-import questionData from '../../../data/questionData.json';
+import questionData from '../../../essentialData/questionData.json';
 
 function ChildhoodSection({ step, patientDetails, tID }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);

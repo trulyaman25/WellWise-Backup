@@ -1,0 +1,12 @@
+[
+  {
+    "id": "doc-1",
+    "name": "Dr. Gajendra Purohit",
+    "specialty": "Clinical Psychologist",
+    "experience": "15 years",
+    "availability": "Mon, Wed, Fri",
+    "fee": 1000,
+    "image": "https://pbs.twimg.com/profile_images/1364936684958142464/k18b5LN3_400x400.jpg",
+    "meetLink": "https://meet.google.com"
+  }
+]

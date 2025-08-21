@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Blueprint
 import os
-from groclake.cataloglake import CatalogLake
-from groclake.modellake import ModelLake  # Add this import
+from groclake.cataloglake import Cataloglake
+from groclake.modellake import Modellake  # Add this import
 from flask_cors import CORS
 
 chat_bot = Blueprint('chatbot', __name__)
@@ -11,10 +11,8 @@ GROCLAKE_API_KEY = 'a3c65c2974270fd093ee8a9bf8ae7d0b'
 GROCLAKE_ACCOUNT_ID = 'cecf88db41531add5d0cefaa83fedb38'
 os.environ['GROCLAKE_API_KEY'] = GROCLAKE_API_KEY
 os.environ['GROCLAKE_ACCOUNT_ID'] = GROCLAKE_ACCOUNT_ID
-
-# Initialize both CatalogLake and ModelLake instances
-catalog = CatalogLake()
-model_lake = ModelLake()  # Add this line
+# FIXME: Replace with your actual OpenAI API key
+os.environ['OPENAI_API_KEY'] = GROCLAKE_API_KEY 
 
 # Chatbot configuration
 CHATBOT_CONFIG = {
@@ -33,8 +31,12 @@ CHATBOT_CONFIG = {
     ]
 }
 
-# Store conversation histories for different sessions
-conversation_histories = {}
+# Initialize both CatalogLake and ModelLake instances
+catalog = Cataloglake()
+model_lake = Modellake(model_config=CHATBOT_CONFIG)  # Add this line
+
+# Store conversation history
+conversation_history = []
 
 @chat_bot.route('/api/chat/config', methods=['GET'])
 def get_config():

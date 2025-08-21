@@ -8,3 +8,13 @@ pandas
 scikit-learn
 nltk
 scipy
+pymongo
+Flask-PyMongo
+SpeechRecognition
+pydub
+google-generativeai
+groclake
+sendgrid
+twilio
+pycryptodome
+mediapipe

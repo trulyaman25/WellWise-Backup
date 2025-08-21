@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import Web3 from "web3";
 import axios from "axios";
 import MentalHealth from "../../../../../../build/contracts/MentalHealth.json";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import questionData from '../../../data/questionData.json';
+import { useNavigate, useParams } from "react-router-dom";
+import questionData from '../../../essentialData/questionData.json';
 
 function SentimentAnalysis({ step, patientDetails, tID }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -173,11 +173,13 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
                 text_2_ipfs: ipfsHash
             };
     
-            const response = await fetch("http://localhost:5000/process_sentiment", {
+            const response = await fetch("http://localhost:5001/process_sentiment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
+                credentials: 'include',
                 body: JSON.stringify(payload),
             });
     
@@ -205,8 +207,14 @@ function SentimentAnalysis({ step, patientDetails, tID }) {
                     result.score.toString()
                 )
                 .send({ from: patientDetails.walletAddress });
-    
-            const stopResponse = await axios.get('http://localhost:5000/stop_session');
+
+            const stopResponse = await axios.get('http://localhost:5001/stop_session', {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
             console.log(stopResponse.data);
     
             await contract.methods

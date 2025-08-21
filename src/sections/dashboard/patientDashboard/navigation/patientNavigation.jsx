@@ -2,13 +2,9 @@ import { NavLink, Link } from 'react-router-dom';
 import WellWiseLogo from '/favicon.png';
 import HomeLightIcon from '/icons/homeLight.png';
 import BrainLightIcon from '/icons/brainLight.png';
-import UserLightIcon from '/icons/userLight.png';
 import HomeIcon from '/icons/home.png';
 import BrainIcon from '/icons/brain.png';
-import UserIcon from '/icons/user.png';
 import LogOutIcon from '/icons/logout.png';
-import StethoscopeIcon from '/icons/stethoscope.png';
-import GameIcon from '/icons/game.png';
 
 function PatientDashboardNavigation() {
     return (
@@ -30,28 +26,14 @@ function PatientDashboardNavigation() {
                     )}
                 </NavLink>
 
-                <NavLink to='takeTest' className={({ isActive }) => `w-[300px] flex justify-start items-center p-4 rounded-3xl transition-colors font-googleSansBlack text-2xl gap-6 duration-300 ${isActive ? 'bg-[#d4eceb] text-[#1a5252]' : 'text-[#d4eceb]'}`} >
-                    {({ isActive }) => (
-                        <>
-                            <img src={isActive ? BrainIcon : BrainLightIcon} alt="Brain Icon" className='w-[40px] h-[40px] transition-all duration-300' />
-                            <h1>MH Test</h1>
-                        </>
-                    )}
+                <NavLink to='takeTest' className={`w-[300px] flex justify-start items-center p-4 rounded-3xl transition-colors font-googleSansBlack text-2xl gap-6 duration-300`} >
+                    <img src={BrainLightIcon} alt="Brain Icon" className='w-[40px] h-[40px] transition-all duration-300' />
+                    <h1 className='text-[#d4eceb]'>Take Test</h1>
                 </NavLink>
 
-                <NavLink to='profile' className={({ isActive }) => `w-[300px] flex justify-start items-center p-4 rounded-3xl transition-colors font-googleSansBlack text-2xl gap-6 duration-300 ${isActive ? 'bg-[#d4eceb] text-[#1a5252]' : 'text-[#d4eceb]'}`} >
-                    {({ isActive }) => (
-                        <>
-                            <img src={isActive ? UserIcon : UserLightIcon} alt="Profile Icon" className='w-[40px] h-[40px] transition-all duration-300' />
-                            <h1>Profile</h1>
-                        </>
-                    )}
-                </NavLink>
-
-
-                <NavLink to='/' className={({ isActive }) => `group w-[300px] hover:bg-rose-500 flex justify-start items-center p-4 rounded-3xl transition-colors font-googleSansBlack text-2xl gap-6 duration-300 ${isActive ? 'bg-[#d4eceb] text-[#1a5252]' : ' text-[#d4eceb]'}`} >
+                <NavLink to='/' className={`group w-[300px] hover:bg-rose-500 flex justify-start items-center p-4 rounded-3xl transition-colors font-googleSansBlack text-2xl gap-6 duration-300`} >
                     <img src={LogOutIcon} alt="Stethoscope Icon" className='w-[40px] h-[40px] transition-all duration-300 group-hover:invert group-hover:brightness-0' />
-                    <h1 className=''>Log Out</h1>
+                    <h1 className='text-[#d4eceb]'>Log Out</h1>
                 </NavLink>
             </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import MentalHealth from '../../../../../build/contracts/MentalHealth.json';
 import PatientRegistration from '../../../../../build/contracts/PatientRegistration.json';
@@ -8,7 +8,6 @@ import gemini from '/animations/gemini.gif';
 
 import Web3 from 'web3';
 import { motion, AnimatePresence } from 'framer-motion';
-import Typewriter from 'typewriter-effect';
 import styled from '@emotion/styled';
 
 const ScrollableContainer = styled.div`
@@ -20,30 +19,15 @@ const ScrollableContainer = styled.div`
 `;
 
 const AnimatedText = ({ text, delay }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay }}
-        className="preserve-whitespace"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay }} className="preserve-whitespace">
         {text}
     </motion.div>
 );
 
 const AdviceStep = ({ step, description, index, totalSteps }) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.5 }} // Sequential delay
-            className="bg-gray-50 rounded-xl p-6 shadow-sm mb-4"
-        >
-            <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: index * 0.5 + 0.2 }}
-                className="text-gray-800"
-            >
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.5 }} className="bg-gray-50 rounded-xl p-6 shadow-sm mb-4">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.5 + 0.2 }} className="text-gray-800" >
                 {`${step}. ${description}`}
             </motion.p>
         </motion.div>
@@ -278,7 +262,7 @@ function Report() {
         };
     
         try {
-            const result = await axios.post('http://127.0.0.1:5000/results', requestData, {
+            const result = await axios.post('http://127.0.0.1:5001/results', requestData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -345,10 +329,6 @@ function Report() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-
-                {/* <div className="text-center mt-8">
-                    
-                </div> */}
             </div>
         </div>
     );

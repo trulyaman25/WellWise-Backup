@@ -19,7 +19,12 @@ function VideoFeed({ session }) {
     const startSession = async () => {
         try {
             setIsVideoLoading(true);
-            const response = await axios.get('http://localhost:5000/start_session');
+            const response = await axios.get('http://localhost:5001/start_session', {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
             console.log(response.data);
             setSessionActive(true);
             setTimeout(() => {
@@ -48,7 +53,7 @@ function VideoFeed({ session }) {
             ) : (
                 sessionActive && (
                     <img
-                        src="http://localhost:5000/video_feed"
+                        src="http://localhost:5001/video_feed"
                         alt="Video Feed"
                         className="rounded-3xl mt-10 h-[250px]"
                         onLoad={() => setIsVideoLoading(false)}
